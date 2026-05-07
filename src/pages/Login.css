@@ -1,0 +1,77 @@
+/* Full page - same bg as dashboard */
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-light);
+}
+
+/* Card - same style as dashboard cards */
+.login-card {
+  background: var(--white);
+  padding: 2rem;
+  height: 350px;
+  width: 350px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+/* Title */
+.login-card h2 {
+  color: var(--accent-blue);
+  margin-bottom: 5px;
+  margin-left: -20px;
+  padding: 10px
+}
+
+
+
+/* Inputs */
+.login-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #edf2f7;
+  border-radius: 6px;
+  outline: none;
+  transition: 0.2s;
+}
+
+.login-card input:focus {
+  border-color: var(--accent-blue);
+}
+
+/* Button - same as dashboard button */
+.login-card button {
+  width: 100%;
+  padding: 10px;
+  background: var(--accent-blue);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  opacity: 0.9;
+}
+
+/* Register link */
+.register-text {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.register-text span {
+  color: var(--accent-blue);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.register-text span:hover {
+  text-decoration: underline;
+}

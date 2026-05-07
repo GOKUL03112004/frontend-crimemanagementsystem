@@ -1,0 +1,154 @@
+:root {
+  --primary-dark: #1a1c23;
+  --accent-blue: #3b82f6;
+  --bg-light: #f4f7fe;
+  --white: #ffffff;
+  --text-gray: #64748b;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background: var(--bg-light);
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 260px;
+  background: var(--primary-dark);
+  color: white;
+  padding: 30px 20px;
+}
+
+.sidebar h2 {
+  font-size: 1.4rem;
+  margin-bottom: 40px;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.sidebar li:hover,
+.sidebar li.active {
+  background: var(--accent-blue);
+  color: white;
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  padding: 50px;
+  overflow-y: auto;
+}
+
+.content-header {
+  margin-bottom: 40px;
+}
+
+.content-header h1 {
+  color: #1e293b;
+  margin-bottom: 8px;
+}
+
+.content-header p {
+  color: var(--text-gray);
+}
+
+/* Form Wrapper & Card */
+.form-wrapper {
+  display: flex;
+  justify-content: center; /* Centered for professional look */
+  margin-top: 20px;
+}
+
+.form-card {
+  background: var(--white);
+  padding: 35px;
+  margin-left: 10px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header h3 {
+  color: var(--primary-dark);
+  font-size: 1.2rem;
+}
+
+/* Input Fields */
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.form-card input,
+.form-card select {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+  outline: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.form-card input:focus,
+.form-card select:focus {
+  border-color: var(--accent-blue);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #2563eb;
+}
+
+.submit-btn:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+}

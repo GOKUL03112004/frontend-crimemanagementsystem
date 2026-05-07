@@ -1,0 +1,228 @@
+:root {
+  --navy: #1e3a8a;
+  --slate: #64748b;
+  --sky: #3b82f6;
+  --danger: #ef4444;
+  --success: #10b981;
+  --border: #e2e8f0;
+}
+
+.profile-page-wrapper {
+  min-height: 100vh;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.profile-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+/* Ensure the wrapper is the reference point */
+.profile-page-wrapper {
+  min-height: 100vh;
+  background: #f8fafc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  position: relative; /* Allows absolute children to position relative to the page */
+  font-family: 'Inter', sans-serif;
+}
+
+/* The Global Back Button */
+.screen-back-btn {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: #ffffff;
+  color: #1e3a8a;
+  border: 1px solid #e2e8f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  z-index: 10; /* Ensures it stays above other elements */
+}
+
+.screen-back-btn:hover {
+  background: #f1f5f9;
+  transform: translateX(-3px); /* Subtle nudge effect */
+  border-color: #1e3a8a;
+}
+
+.screen-back-btn .arrow {
+  font-size: 1.2rem;
+}
+
+/* Header UI without the internal back button */
+.profile-header {
+  background: #fdfdfd;
+  padding: 40px 30px 30px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-content {
+  text-align: center;
+}
+.avatar-circle {
+  width: 70px;
+  height: 70px;
+  background: var(--navy);
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 15px;
+  box-shadow: 0 4px 10px rgba(30, 58, 138, 0.2);
+}
+
+.profile-header h2 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.4rem;
+}
+
+.role-badge {
+  display: inline-block;
+  background: #dbeafe;
+  color: var(--navy);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.profile-body {
+  padding: 30px;
+}
+
+.profile-field {
+  margin-bottom: 20px;
+}
+
+.profile-field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--slate);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.profile-field input, 
+.profile-field textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.profile-field textarea {
+  resize: none;
+  height: 80px;
+}
+
+.profile-field input.editable, 
+.profile-field textarea.editable {
+  background: #ffffff;
+  border-color: var(--sky);
+}
+
+.profile-field input.editable:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.profile-field input.readonly {
+  color: var(--slate);
+  cursor: not-allowed;
+}
+
+.profile-field small {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.profile-footer {
+  padding: 20px 30px 35px;
+  display: flex;
+  justify-content: center;
+}
+
+.action-group {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.edit-btn, .save-btn, .cancel-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.edit-btn {
+  background: var(--navy);
+  color: white;
+  border: none;
+  width: 100%;
+}
+
+.edit-btn:hover {
+  background: #1e40af;
+}
+
+.save-btn {
+  background: var(--success);
+  color: white;
+  border: none;
+  flex: 2;
+}
+
+.save-btn:hover {
+  background: #059669;
+}
+
+.cancel-btn {
+  background: white;
+  color: var(--slate);
+  border: 1px solid var(--border);
+  flex: 1;
+}
+
+.cancel-btn:hover {
+  background: #f1f5f9;
+}

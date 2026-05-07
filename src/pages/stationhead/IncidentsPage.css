@@ -1,0 +1,213 @@
+.admin-incidents-layout {
+  padding: 40px;
+  background-color: #f1f5f9;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+.admin-header {
+  margin-bottom: 30px;
+  border-left: 5px solid #1e3a8a;
+  padding-left: 20px;
+}
+
+.admin-header h1 {
+  color: #0f172a;
+  margin: 0;
+}
+
+.admin-header p {
+  color: #64748b;
+  margin-top: 5px;
+}
+
+.admin-incident-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+.admin-incident-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-top-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.case-id {
+  font-family: monospace;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.status-pill.initiated { background: #fee2e2; color: #991b1b; }
+.status-pill.active { background: #dbeafe; color: #1e40af; }
+.status-pill.closed { background: #fef3c7; color: #92400e; }
+.status-pill.verified { background: #dcfce7; color: #15803d; }
+
+.admin-action-row {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-action-row input, .admin-action-row select {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.admin-action-row button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-assign { background: #1e3a8a; color: white; }
+.btn-update { background: #64748b; color: white; }
+
+.card-final-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.btn-view { flex: 1; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; }
+.btn-delete { background: #ef4444; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; }
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.report-modal-window {
+  background: white;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header-sec {
+    gap: 20px;
+  padding: 20px 30px;
+  background: #1a1c23;
+  color: white;
+  position: flex;
+}
+
+.official-stamp {
+  font-size: 0.65rem;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 2px 6px;
+  display: block;
+  width: fit-content;
+  margin-bottom: 5px;
+}
+
+.close-x {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: none; border: none;
+  color: white; font-size: 1.5rem; cursor: pointer;
+}
+
+.modal-scroll-content {
+  padding: 30px;
+  overflow-y: auto;
+}
+
+.report-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.report-box h4 {
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+  color: #1e3a8a;
+}
+
+.report-evidence img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.modal-footer-sec {
+  padding: 20px 30px;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+.btn-download-pdf { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btn-close-modal { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+
+.personnel-info-box {
+  background: #f8fafc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  border: 1px solid #e2e8f0;
+}
+
+.info-line {
+  font-size: 0.85rem;
+  color: #334155;
+  margin-bottom: 4px;
+}
+
+.id-badge {
+  color: #1e3a8a;
+  font-weight: 700;
+  font-size: 0.8rem;
+  background: #dbeafe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 5px;
+}
+
+/* ... existing styles from previous response ... */
+
+.admin-incident-card h3 {
+  margin-bottom: 10px;
+  color: #1e3a8a;
+}
