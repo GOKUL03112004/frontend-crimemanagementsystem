@@ -23,7 +23,7 @@ function UserDashboard() {
           <li className="active">Dashboard</li>
           <li onClick={() => navigate("../profile")}>Profile</li>
           <li onClick={() => {
-            sessionStorage.clear();
+            localStorage.clear();
             navigate("/");
           }}>Logout</li>
         </ul>

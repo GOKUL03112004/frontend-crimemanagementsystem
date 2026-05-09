@@ -7,7 +7,7 @@ import { getRole } from "../../utils/auth";
 
 function GetAllIncident() {
   // Use localStorage to stay consistent with your Login/Profile logic
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
   const [incidents, setIncidents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeReport, setActiveReport] = useState(null);

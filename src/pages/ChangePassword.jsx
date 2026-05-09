@@ -7,7 +7,7 @@ import "./ChangePassword.css";
 
 function ChangePassword() {
   const navigate = useNavigate();
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
   const [passwords, setPasswords] = useState({
     newPassword: "",

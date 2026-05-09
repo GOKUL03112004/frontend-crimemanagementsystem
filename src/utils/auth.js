@@ -1,6 +1,6 @@
 // src/utils/auth.js
 export const isAuthenticated = () => {
-  return !!sessionStorage.getItem("token");
+  return !!localStorage.getItem("token");
 };
 
-export const getRole = () => sessionStorage.getItem("role");
+export const getRole = () => localStorage.getItem("role");

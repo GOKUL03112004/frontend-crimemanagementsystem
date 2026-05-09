@@ -14,7 +14,7 @@ function StationHeadDashboard() {
   }
 
   const handleLogout = () => {
-    sessionStorage.clear();
+    localStorage.clear();
     navigate("/");
   };
 

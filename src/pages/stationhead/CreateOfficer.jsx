@@ -61,7 +61,7 @@ function CreateOfficer() {
           <li className="active">Create Officer</li>
           
           <li onClick={() => {
-            sessionStorage.clear();
+            localStorage.clear();
             navigate("/");
           }}>Logout</li>
         </ul>

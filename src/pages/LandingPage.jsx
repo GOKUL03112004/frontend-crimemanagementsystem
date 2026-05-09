@@ -11,8 +11,8 @@ const LandingPage = () => {
   // Sync with localStorage
   useEffect(() => {
     const syncAuth = () => {
-      setToken(sessionStorage.getItem("token"));
-      setRole(sessionStorage.getItem("role"));
+      setToken(localStorage.getItem("token"));
+      setRole(localStorage.getItem("role"));
     };
 
     syncAuth();
@@ -47,9 +47,9 @@ const LandingPage = () => {
 
   // Logout
   const handleLogout = () => {
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("role");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("role");
 
     setToken(null);
     setRole(null);

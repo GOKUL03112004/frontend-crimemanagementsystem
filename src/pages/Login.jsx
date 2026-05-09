@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import API from "../services/api";
 import "./Login.css";
+import { getRole } from "../utils/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -9,12 +11,12 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    const role = sessionStorage.getItem("role");
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
     if (token && role) {
       navigate("/"); // Redirect to landing page, which will handle further redirection
     }
-  }, []);
+  });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,9 +29,28 @@ function Login() {
         password,
       });
 
-      sessionStorage.setItem("token", res.data.token);
-      sessionStorage.setItem("userId", res.data.userID);
-      sessionStorage.setItem("role", res.data.role);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userId", res.data.userID);
+      localStorage.setItem("role", res.data.role);
+
+      toast.success("Login successfully ✅");
+      if (res.data.role === "Officer") {
+
+        const userId = res.data.userID;
+
+        // 🔹 Get Officer Data
+        const officerRes = await API.get(
+          `/Officer/GetOfficerByUserId?userId=${userId}`
+        );
+
+        // 🔹 Store Officer ID
+        localStorage.setItem(
+          "officerId",
+          officerRes.data.officerId
+        );
+
+        console.log("Officer ID:", officerRes.data.officerId);
+      }
 
       const role = res.data.role;
       if(role === "User")
@@ -84,6 +105,7 @@ function Login() {
           </span>
         </p>
       </div>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }

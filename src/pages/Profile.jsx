@@ -8,7 +8,7 @@ import "./Profile.css";
 function Profile() {
   const navigate = useNavigate();
   
-  const userId = sessionStorage.getItem("userId");
+  const userId = localStorage.getItem("userId");
 
   const [user, setUser] = useState({
     name: "",
@@ -36,7 +36,7 @@ function Profile() {
       return;
     }
     fetchUser();
-  }, [userId]);
+  });
 
   const handleUpdate = async () => {
     setLoading(true);

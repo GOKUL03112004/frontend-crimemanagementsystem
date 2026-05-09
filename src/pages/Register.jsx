@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import API from "../services/api";
 import "./Register.css";
 
@@ -29,7 +31,7 @@ function Register() {
     setLoading(true);
     try {
       await API.post("/Auth/Register", form);
-      alert("Registration successful! You can now login.");
+      toast.success("Registration successful!")
       navigate("/login");
     } catch (err) {
       console.error(err);
@@ -104,6 +106,7 @@ function Register() {
           Already have an account? <Link to="/login" className="link">Login here</Link>
         </p>
       </div>
+      <ToastContainer position="bottom-right" />
     </div>
   );
 }
