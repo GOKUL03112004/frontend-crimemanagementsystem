@@ -5,6 +5,7 @@ import { getRole } from "../../utils/auth";
 
 function OfficerDashboard() {
   const navigate = useNavigate();
+
   const role = getRole();
   const officerId = localStorage.getItem("officerId");
 
@@ -14,70 +15,155 @@ function OfficerDashboard() {
     return <Navigate to="/login" />;
   }
 
+  const dashboardCards = [
+    {
+      title: "My Assignments",
+      description: "Manage and investigate assigned incidents",
+      icon: "📂",
+      route: "/officer/officer-assignments",
+      color: "blue",
+    },
+    {
+      title: "Officer Profile",
+      description: "View and manage personnel information",
+      icon: "👮",
+      route: "/profile",
+      color: "green",
+    },
+    {
+      title: "Security",
+      description: "Update your secure access credentials",
+      icon: "🔒",
+      route: "/change-password",
+      color: "orange",
+    },
+    {
+      title: "Performance",
+      description: "Track case resolution and performance analytics",
+      icon: "📊",
+      route: "/officer/officer-performance",
+      color: "purple",
+    },
+  ];
+
   return (
-    <div className="dashboard-container">
-      {/* Sidebar - Consistent with MEIKAAPPU Theme */}
-      <div className="sidebar">
-        <h2 onClick={() => navigate("/")}>🛡️MEIKAAPPU</h2>
-        <ul>
-          <li className="active">Dashboard</li>
-          <li
+    <div className="dashboard-layout">
+      {/* Sidebar */}
+      <aside className="dashboard-sidebar">
+
+        <div
+          className="brand-section"
+          onClick={() => navigate("/")}
+        >
+          <div className="brand-icon">🛡️</div>
+          <h2>MEIKAAPPU</h2>
+        </div>
+
+        <nav className="sidebar-nav">
+
+          <div className="nav-item active">
+            <span>🏠</span>
+            Dashboard
+          </div>
+
+          <div
+            className="nav-item logout"
             onClick={() => {
               localStorage.clear();
               navigate("/");
             }}
           >
+            <span>🚪</span>
             Logout
-          </li>
-        </ul>
-      </div>
+          </div>
+
+        </nav>
+
+      </aside>
 
       {/* Main Content */}
-      <div className="main-content">
+      <main className="dashboard-main">
+
+        {/* Header */}
         <div className="dashboard-header">
-          <h1>Officer Control Panel</h1>
-          <p>Welcome back, Badge ID: <strong>#OFF-{officerId}</strong></p>
+
+          <div>
+            <h1>Officer Control Panel</h1>
+
+            <p>
+              Manage assigned investigations, monitor reports,
+              and securely access officer tools.
+            </p>
+          </div>
+
+          <div className="status-card">
+            <span className="status-dot"></span>
+            Officer Active • #{officerId}
+          </div>
+
         </div>
 
-        <div className="card-grid">
-          {/* My Assignments - This redirects to the incidents list */}
-          <div 
-            className="feature-card"
-            onClick={() => navigate("/officer/officer-assignments")} // Change this path to match your route
-          >
-            <div className="icon">📂</div>
-            <h3>My Assignments</h3>
-            <p>Manage and update cases assigned to you</p>
+        {/* Welcome Banner */}
+        <div className="welcome-banner">
+
+          <div className="welcome-content">
+
+            <h2>Law Enforcement Operations</h2>
+
+            <p>
+              Access assigned cases, monitor investigation updates,
+              and manage incident resolution workflows through the
+              centralized officer portal.
+            </p>
+
+            <button
+              onClick={() =>
+                navigate("/officer/officer-assignments")
+              }
+            >
+              View Assignments
+            </button>
+
           </div>
 
-          {/* Profile */}
-          <div 
-            className="feature-card"
-            onClick={() => navigate("/profile")}
-          >
-            <div className="icon">👤</div>
-            <h3>Officer Profile</h3>
-            <p>View and manage your personnel details</p>
+          <div className="welcome-graphic">
+            🛡️
           </div>
 
-          {/* Security / Change Password */}
-          <div 
-            className="feature-card"
-            onClick={() => navigate("/change-password")}
-          >
-            <div className="icon">🔒</div>
-            <h3>Security</h3>
-            <p>Update your system access password</p>
-          </div>
-
-          {/* Analytics / Reports (Placeholder for professional look) */}
-          <div className="feature-card disabled">
-            <div className="icon">📊</div>
-            <h3>Performance</h3>
-            <p>Review case resolution analytics</p>
-          </div>
         </div>
-      </div>
+
+        {/* Dashboard Cards */}
+        <div className="dashboard-grid">
+
+          {dashboardCards.map((card, index) => (
+            <div
+              key={index}
+              className={`dashboard-card ${card.color}`}
+              onClick={() => navigate(card.route)}
+            >
+
+              <div className="card-top">
+                <div className="card-icon">
+                  {card.icon}
+                </div>
+              </div>
+
+              <div className="card-content">
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+              </div>
+
+              <div className="card-footer">
+                <span>Open Module</span>
+                <span>→</span>
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+
+      </main>
     </div>
   );
 }

@@ -1,77 +1,238 @@
-/* Full page - same bg as dashboard */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --secondary: #0f172a;
+  --bg: #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.85);
+  --text-main: #0f172a;
+  --text-light: #64748b;
+  --border: #e2e8f0;
+  --white: #ffffff;
+}
+
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+/* PAGE */
 .login-page {
-  height: 100vh;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--bg);
+}
+
+/* LEFT SECTION */
+.login-brand-section {
+  position: relative;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(37, 99, 235, 0.95),
+      rgba(15, 23, 42, 0.92)
+    ),
+    url("https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=2070&auto=format&fit=crop");
+  background-size: cover;
+  background-position: center;
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: var(--bg-light);
+  justify-content: center;
+  padding: 60px;
 }
 
-/* Card - same style as dashboard cards */
+.brand-overlay {
+  color: white;
+  max-width: 500px;
+}
+
+.brand-overlay h1 {
+  font-size: 4rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+
+.brand-overlay > p {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 40px;
+}
+
+.brand-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.feature-item span {
+  color: #93c5fd;
+  font-size: 1rem;
+}
+
+.feature-item p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* RIGHT SECTION */
+.login-form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: #f8fafc;
+}
+
+/* CARD */
 .login-card {
-  background: var(--white);
-  padding: 2rem;
-  height: 350px;
-  width: 350px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 450px;
+  background: var(--card-bg);
+  webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 24px;
+  padding: 45px;
+  box-shadow:
+    0 10px 40px rgba(15, 23, 42, 0.08);
+}
+
+/* HEADER */
+.login-header {
   text-align: center;
+  margin-bottom: 35px;
 }
 
-/* Title */
-.login-card h2 {
-  color: var(--accent-blue);
-  margin-bottom: 5px;
-  margin-left: -20px;
-  padding: 10px
+.shield-icon {
+  font-size: 3rem;
+  margin-bottom: 15px;
 }
 
+.login-header h2 {
+  font-size: 2rem;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
 
+.login-header p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+}
 
-/* Inputs */
-.login-card input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #edf2f7;
-  border-radius: 6px;
+/* FORM */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.input-group input {
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.9);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
   outline: none;
-  transition: 0.2s;
+  border-color: var(--primary);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-.login-card input:focus {
-  border-color: var(--accent-blue);
-}
-
-/* Button - same as dashboard button */
+/* BUTTON */
 .login-card button {
-  width: 100%;
-  padding: 10px;
-  background: var(--accent-blue);
-  color: var(--white);
-  border: none;
-  border-radius: 6px;
   margin-top: 10px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--primary-dark)
+  );
+  color: white;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
-.login-card button:hover {
-  opacity: 0.9;
+.login-card button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.25);
 }
 
-/* Register link */
+.login-card button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* DIVIDER */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 28px 0 18px;
+}
+
+/* REGISTER */
 .register-text {
-  margin-top: 15px;
-  font-size: 14px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.95rem;
 }
 
 .register-text span {
-  color: var(--accent-blue);
+  margin-left: 8px;
+  color: var(--primary);
+  font-weight: 700;
   cursor: pointer;
-  font-weight: 500;
 }
 
 .register-text span:hover {
   text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-brand-section {
+    display: none;
+  }
+
+  .login-form-section {
+    padding: 20px;
+  }
+
+  .login-card {
+    padding: 35px 25px;
+  }
 }

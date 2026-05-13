@@ -1,152 +1,376 @@
-.register-page {
-  background-color: #f1f5f9;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  font-family: 'Inter', sans-serif;
+:root {
+
+  --primary-bg: #f4f7fb;
+
+  --card-bg: rgba(255, 255, 255, 0.82);
+
+  --glass-border: rgba(255, 255, 255, 0.35);
+
+  --primary-text: #0f172a;
+
+  --secondary-text: #64748b;
+
+  --accent: #2563eb;
+
+  --accent-hover: #1d4ed8;
+
+  --input-bg: rgba(255, 255, 255, 0.85);
+
+  --input-border: #dbe4f0;
+
+  --shadow:
+    0 12px 32px rgba(15, 23, 42, 0.08);
+
+  --success: #10b981;
+
+  --danger: #ef4444;
 }
+
+/* Page Layout */
+
+.register-page {
+
+  min-height: 100vh;
+
+  padding: 50px 20px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at top left,
+      #dbeafe 0%,
+      transparent 25%
+    ),
+
+    radial-gradient(
+      circle at bottom right,
+      #bfdbfe 0%,
+      transparent 30%
+    ),
+
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #eef5ff
+    );
+
+  font-family: "Inter", sans-serif;
+}
+
+/* Glass Card */
 
 .register-card {
-  background: white;
+
   width: 100%;
-  max-width: 650px;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+
+  max-width: 720px;
+
+  background: var(--card-bg);
+
+  backdrop-filter: blur(16px);
+
+  -webkit-backdrop-filter: blur(16px);
+
+  border: 1px solid var(--glass-border);
+
+  border-radius: 28px;
+
+  padding: 45px;
+
+  box-shadow: var(--shadow);
+
+  animation: fadeUp 0.5s ease;
 }
 
+/* Logo */
+
 .reg-logo-section {
+
   display: flex;
-  justify-content: center;
+
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+
+  justify-content: center;
+
+  gap: 14px;
+
+  margin-bottom: 10px;
 }
 
 .reg-icon {
-  font-size: 2rem;
+
+  font-size: 2.4rem;
 }
 
 .reg-title {
-  color: #1e3a8a;
-  font-size: 1.8rem;
+
+  font-size: 2rem;
+
   font-weight: 800;
-  margin: 0;
+
   letter-spacing: -0.5px;
+
+  color: var(--primary-text);
+
+  margin: 0;
 }
 
+/* Subtitle */
+
 .reg-subtitle {
+
   text-align: center;
-  color: #64748b;
-  margin-bottom: 30px;
+
+  color: var(--secondary-text);
+
+  margin-bottom: 35px;
+
   font-size: 0.95rem;
 }
 
+/* Form */
+
 .register-form {
+
   display: flex;
+
   flex-direction: column;
-  gap: 18px;
+
+  gap: 22px;
 }
 
 .form-row {
+
   display: grid;
+
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+
+  gap: 18px;
 }
 
 .form-group {
+
   display: flex;
+
   flex-direction: column;
-  gap: 6px;
+
+  gap: 8px;
 }
+
+/* Labels */
 
 .form-group label {
+
   font-size: 0.85rem;
-  font-weight: 600;
-  color: #475569;
+
+  font-weight: 700;
+
+  color: var(--primary-text);
+
+  letter-spacing: 0.3px;
 }
 
-.register-form input, 
+/* Inputs */
+
+.register-form input,
 .register-form textarea {
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  border: 1px solid var(--input-border);
+
+  background: var(--input-bg);
+
   font-size: 0.95rem;
-  transition: border 0.3s ease;
+
+  color: var(--primary-text);
+
+  transition: all 0.25s ease;
 }
+
+/* Textarea */
 
 .register-form textarea {
+
   resize: vertical;
-  min-height: 80px;
+
+  min-height: 90px;
 }
 
-.register-form input:focus, 
+/* Focus */
+
+.register-form input:focus,
 .register-form textarea:focus {
+
   outline: none;
-  border-color: #1e3a8a;
-  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1);
+
+  border-color: var(--accent);
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(37, 99, 235, 0.12),
+    0 4px 14px rgba(37, 99, 235, 0.08);
+
+  transform: translateY(-1px);
 }
+
+/* Verification Section */
 
 .verification-section {
-  background-color: #f8fafc;
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px dashed #cbd5e1;
-  margin-top: 10px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  border: 1px solid rgba(37, 99, 235, 0.12);
+
+  padding: 20px;
+
+  border-radius: 18px;
 }
 
 .verification-section h4 {
-  margin: 0 0 12px 0;
+
+  margin-bottom: 15px;
+
   font-size: 0.9rem;
-  color: #1e3a8a;
+
+  font-weight: 800;
+
+  color: var(--accent);
+
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+
+  letter-spacing: 0.7px;
 }
+
+/* Register Button */
 
 .register-btn {
-  background-color: #1e3a8a;
-  color: white;
-  padding: 14px;
-  border: none;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 1rem;
-  cursor: pointer;
+
   margin-top: 10px;
-  transition: background 0.3s ease;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #38bdf8
+    );
+
+  color: white;
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 15px;
+
+  font-size: 1rem;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  box-shadow:
+    0 10px 20px rgba(37, 99, 235, 0.18);
 }
 
-.register-btn:hover {
-  background-color: #1d4ed8;
+.register-btn:hover:not(:disabled) {
+
+  transform: translateY(-2px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #2563eb
+    );
+
+  box-shadow:
+    0 16px 30px rgba(37, 99, 235, 0.24);
 }
 
 .register-btn:disabled {
-  background-color: #94a3b8;
+
+  opacity: 0.7;
+
   cursor: not-allowed;
 }
 
+/* Login Redirect */
+
 .login-redirect {
+
+  margin-top: 28px;
+
   text-align: center;
-  margin-top: 25px;
-  color: #64748b;
-  font-size: 0.9rem;
+
+  color: var(--secondary-text);
+
+  font-size: 0.92rem;
 }
 
 .link {
-  color: #1e3a8a;
+
+  color: var(--accent);
+
+  font-weight: 700;
+
   text-decoration: none;
-  font-weight: 600;
 }
 
 .link:hover {
+
   text-decoration: underline;
 }
 
-/* Responsive adjustment for mobile */
-@media (max-width: 500px) {
+/* Animation */
+
+@keyframes fadeUp {
+
+  from {
+
+    opacity: 0;
+
+    transform: translateY(18px);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 650px) {
+
+  .register-card {
+
+    padding: 30px 22px;
+
+    border-radius: 22px;
+  }
+
   .form-row {
+
     grid-template-columns: 1fr;
+  }
+
+  .reg-title {
+
+    font-size: 1.6rem;
   }
 }

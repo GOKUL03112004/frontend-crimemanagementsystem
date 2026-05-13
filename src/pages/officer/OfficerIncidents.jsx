@@ -3,10 +3,10 @@ import API from "../../services/api";
 import { useNavigate, Navigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./OfficerDashBoard.css";
+import "./OfficerIncidents.css"; // We will update this CSS next
 import { getRole } from "../../utils/auth";
 
-function OfficerDashboard() {
+function OfficerIncident() {
   const navigate = useNavigate();
   const officerId = localStorage.getItem("officerId");
   const role = getRole();
@@ -19,7 +19,6 @@ function OfficerDashboard() {
     if (officerId) fetchAssignedIncidents();
   }, [officerId]);
 
-  // Role Protection
   if (role !== "Officer") {
     alert("Access Denied");
     return <Navigate to="/login" />;
@@ -37,151 +36,199 @@ function OfficerDashboard() {
     }
   };
 
-  
-
   const handleStatusUpdate = async (id) => {
     try {
-      // Officers can only mark as 'Closed' according to backend logic
+      // Officers mark as Closed
       await API.put(`/Incident/UpdateIncidentStatus/${id}?status=Closed`);
-      toast.success("Investigation finalized. Case marked as Closed.");
-      fetchAssignedIncidents();
+      toast.success("Investigation finalized and marked as Closed");
+      fetchAssignedIncidents(); // Refresh list
     } catch (err) {
-      toast.error(err.response?.data?.Details || "Unauthorized status change");
+      toast.error(err.response?.data?.Details || "Failed to update status");
     }
   };
 
   const handleView = async (id) => {
-    try {
-      const res = await API.get(`/Incident/GetIncidentById/${id}`);
-      setSelectedIncident(res.data);
-    } catch {
-      toast.error("Failed to access incident file");
-    }
-  };
+  try {
 
-  const handleDownloadPdf = async (id) => {
+    const res = await API.get(
+      `/Incident/GetIncidentById/${id}`
+    );
+
+    setSelectedIncident(res.data);
+
+  } catch (err) {
+
+    toast.error("Failed to load incident details");
+  }
+};
+
+  const handleDownloadPdf = async (incidentId) => {
     try {
-      const response = await API.get(`/Incident/DownloadPdf/${id}`, { responseType: 'blob' });
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      toast.info("Generating official officer report...");
+      const response = await API.get(`/Incident/DownloadPdf/${incidentId}`, {
+        responseType: 'blob',
+      });
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const downloadUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', `Officer_Report_${id}.pdf`);
+      link.href = downloadUrl;
+      link.setAttribute('download', `Officer_Report_INC-${incidentId}.pdf`);
       document.body.appendChild(link);
       link.click();
-      window.URL.revokeObjectURL(url);
-      toast.success("PDF Downloaded");
-    } catch {
+      link.remove();
+      window.URL.revokeObjectURL(downloadUrl);
+    } catch (err) {
       toast.error("PDF generation failed");
     }
   };
 
-  
-
   return (
-    <div className="officer-dashboard-layout">
-      {/* Sidebar - Matches StationHead Theme */}
-      <div className="officer-sidebar">
-        <h2 onClick={() => navigate("/")}>🛡️ MEIKAAPPU</h2>
-        <ul>
-          <li className="active">Assigned Cases</li>
-          <li onClick={() => { localStorage.clear(); navigate("/"); }}>Logout</li>
-        </ul>
-      </div>
+    <div className="incidents-page-container officer-portal">
+      <header className="incidents-header">
+        <div className="header-flex-row">
+           <div>
+              <h2>Investigation Dashboard</h2>
+              <p>Badge ID: <strong>#OFF-{officerId}</strong> | Managing assigned cases</p>
+           </div>
+           <button className="btn-logout-minimal" onClick={() => { localStorage.clear(); navigate("/"); }}>
+             Logout System
+           </button>
+        </div>
+      </header>
 
-      <div className="officer-main-content">
-        <header className="officer-header">
-          <h1>Officer Investigation Portal</h1>
-          <p>Badge ID: <strong>#OFF-{officerId}</strong> | Manage your assigned case files.</p>
-        </header>
-
-        {loading ? (
-          <div className="system-loading">Accessing Assigned Files...</div>
-        ) : (
-          <div className="officer-incident-grid">
-            {incidents.map((incident) => (
-              <div key={incident.incidentId} className="officer-incident-card">
-                <div className="card-top-info">
-                  <span className="case-id">#INC-{incident.incidentId}</span>
-                  <span className={`status-pill ${incident.status?.toLowerCase()}`}>
+      {loading ? (
+        <div className="loading-state">
+          <div className="spinner"></div>
+          <p>Accessing Secure Investigation Files...</p>
+        </div>
+      ) : (
+        <div className="incidents-grid">
+          {incidents.length > 0 ? (
+            incidents.map((incident) => (
+              <div key={incident.incidentId} className="incident-summary-card officer-card">
+                <div className="card-top-row">
+                  <span className="case-number">#INC-{incident.incidentId}</span>
+                  <span className={`status-tag ${incident.status.toLowerCase()}`}>
                     {incident.status}
                   </span>
                 </div>
-
                 <h3>{incident.title}</h3>
-                
-                <div className="personnel-info-box">
-                  <div className="info-line">
-                    <strong>Complainant:</strong> {incident.userName}
-                  </div>
-                  <div className="info-line">
-                    <strong>Reporter ID:</strong> <span className="id-badge">#{incident.userId}</span>
-                  </div>
+                <div className="mini-info-box">
+                    <p><strong>Complainant:</strong> {incident.userName}</p>
+                    <p><strong>Type:</strong> {incident.incidentType}</p>
                 </div>
-
-                <div className="card-final-actions">
-                  <button className="btn-view" onClick={() => handleView(incident.incidentId)}>Open File</button>
-                  <button className="btn-pdf" onClick={() => handleDownloadPdf(incident.incidentId)}>PDF</button>
-                  
-                  {incident.status === "Active" && (
-                    <button className="btn-close-case" onClick={() => handleStatusUpdate(incident.incidentId)}>
-                      Finalize & Close
-                    </button>
-                  )}
-                </div>
+                <button 
+                  className="btn-open-report" 
+                  onClick={() => handleView(incident.incidentId)}
+                >
+                  Open Case File
+                </button>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* --- SHARED THEME MODAL --- */}
-      {selectedIncident && (
-        <div className="modal-overlay" onClick={() => setSelectedIncident(null)}>
-          <div className="report-modal-window" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header-sec">
-              <span className="official-stamp">OFFICIAL OFFICER RECORD</span>
-              <h2>{selectedIncident.title}</h2>
+            ))
+          ) : (
+            <div className="empty-logs">
+              <p>No investigations currently assigned to your badge.</p>
             </div>
-            <button className="close-x" onClick={() => setSelectedIncident(null)}>&times;</button>
+          )}
+        </div>
+      )}
 
-            <div className="modal-scroll-content">
-              <div className="report-grid-layout">
-                <div className="report-box">
-                  <h4>Investigation Details</h4>
-                  <p><strong>Category:</strong> {selectedIncident.incidentType}</p>
-                  <p><strong>Filing Date:</strong> {new Date(selectedIncident.createdDate).toLocaleDateString()}</p>
-                  <p><strong>Narrative:</strong> {selectedIncident.description}</p>
+      {/* --- OFFICER MODAL --- */}
+      {selectedIncident && (
+        <div className="report-modal-overlay" onClick={() => setSelectedIncident(null)}>
+          <div className="report-modal-window" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-sec officer-theme">
+              <div className="header-labels">
+                <span className="official-text">OFFICIAL POLICE RECORD</span>
+                <h2>{selectedIncident.title}</h2>
+              </div>
+              <button className="btn-close-x" onClick={() => setSelectedIncident(null)}>&times;</button>
+            </div>
+
+            <div className="modal-scroll-body">
+              <div className="info-row">
+
+  <div className="info-block">
+    <label>Complainant Name</label>
+
+    <div className="data-display highlight">
+      {selectedIncident.userName}
+    </div>
+  </div>
+
+  <div className="info-block">
+    <label>Complainant ID</label>
+
+    <div className="data-display">
+      {selectedIncident.userID}
+    </div>
+  </div>
+
+</div>
+
+<div className="info-row">
+
+  <div className="info-block">
+    <label>Incident Type</label>
+
+    <div className="data-display">
+      {selectedIncident.incidentType}
+    </div>
+  </div>
+
+  <div className="info-block">
+    <label>Current Status</label>
+
+    <div className="data-display">
+      {selectedIncident.status}
+    </div>
+  </div>
+
+</div>
+<div className="info-block">
+
+                <label>
+                  Incident Evidence / Description
+                </label>
+
+                <div className="description-box-final">
+                  {
+                    selectedIncident.description
+                  }
                 </div>
 
-                <div className="report-box">
-                  <h4>Subject Details</h4>
-                  <p><strong>Name:</strong> {selectedIncident.userName}</p>
-                  <p><strong>Email:</strong> {selectedIncident.userEmail}</p>
-                  <p><strong>Case Status:</strong> {selectedIncident.status}</p>
-                </div>
               </div>
 
               {selectedIncident.imagePath && (
-                <div className="report-evidence">
-                  <h4>Evidence Media</h4>
-                  <img src={`http://localhost:5109${selectedIncident.imagePath}`} alt="Evidence" />
+                <div className="info-block">
+                  <label>Evidence Media</label>
+                  <div className="evidence-media-preview">
+                     <img src={`http://localhost:5109${selectedIncident.imagePath}`} alt="Evidence" />
+                  </div>
                 </div>
               )}
             </div>
 
             <div className="modal-footer-sec">
-              <button className="btn-download-pdf" onClick={() => handleDownloadPdf(selectedIncident.incidentId)}>
-                Download PDF
+              {selectedIncident.status === "Active" && (
+                <button className="btn-finalize" onClick={() => handleStatusUpdate(selectedIncident.incidentId)}>
+                  Finalize & Close Case
+                </button>
+              )}
+              <button className="btn-print" onClick={() => handleDownloadPdf(selectedIncident.incidentId)}>
+                Export PDF
               </button>
-              <button className="btn-close-modal" onClick={() => setSelectedIncident(null)}>Close</button>
+              <button className="btn-close-final" onClick={() => setSelectedIncident(null)}>
+                Return
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      <ToastContainer position="bottom-right" theme="light" />
+      <ToastContainer position="bottom-right" theme="colored" />
     </div>
   );
 }
 
-export default OfficerDashboard;
+export default OfficerIncident;

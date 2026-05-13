@@ -5,87 +5,205 @@ import "./StationHeadDashboard.css";
 
 function StationHeadDashboard() {
   const navigate = useNavigate();
+
   const role = getRole();
 
-  // 🔐 Role Protection
+  // Role Protection
   if (role !== "StationHead") {
     alert("Access Denied");
     return <Navigate to="/login" />;
   }
 
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
+  const dashboardCards = [
+    {
+      title: "User Management",
+      description:
+        "View, manage, update, and monitor registered citizen accounts.",
+      icon: "👥",
+      route: "/stationhead/users",
+      color: "blue",
+    },
+    {
+      title: "Officer Management",
+      description:
+        "Manage officer records, assignments, and operational access.",
+      icon: "🧑‍✈️",
+      route: "/stationhead/officers",
+      color: "green",
+    },
+    {
+      title: "Incident Control",
+      description:
+        "Assign officers, monitor investigations, and update case status.",
+      icon: "🚨",
+      route: "/stationhead/incidents",
+      color: "orange",
+    },
+    {
+      title: "Create Officer",
+      description:
+        "Add and register new officers into the secured system.",
+      icon: "➕",
+      route: "/stationhead/create-officer",
+      color: "purple",
+    },
+    {
+      title: "Crime Analytics",
+      description:
+        "Analyze crime trends, patrol efficiency, and operational insights.",
+      icon: "📊",
+      route: "/stationhead/crime-analytics",
+      color: "blue",
+    },
+    {
+      title: "Profile",
+      description:
+        "View and update your station head profile information.",
+      icon: "👤",
+      route: "/profile",
+      color: "green",
+    },
+    {
+      title: "Security",
+      description:
+        "Update password and manage secure system access settings.",
+      icon: "🔒",
+      route: "/change-password",
+      color: "orange",
+    },
+  ];
 
   return (
-    <div className="dashboard-container">
+    <div className="dashboard-layout">
 
       {/* Sidebar */}
-      <div className="sidebar">
-        <h2 onClick={() => navigate("/")}>🛡️MEIKAAPPU</h2>
-        <ul>
-          <li className="active">Dashboard</li>
-          <li onClick={handleLogout}>Logout</li>
-        </ul>
-      </div>
+      <aside className="dashboard-sidebar">
 
-      {/* Main Content */}
-      <div className="main-content">
-        <h1>Station Head Dashboard</h1>
+        <div
+          className="brand-section"
+          onClick={() => navigate("/")}
+        >
+          <div className="brand-icon">🛡️</div>
+          <h2>MEIKAAPPU</h2>
+        </div>
 
-        <div className="card-grid">
+        <nav className="sidebar-nav">
 
-          {/* USER MANAGEMENT */}
-          <div className="feature-card" onClick={() => navigate("/stationhead/users")}>
-            <div className="icon">👥</div>
-            <h3>User Management</h3>
-            <p>View, update, and delete users</p>
+          <div className="nav-item active">
+            <span>🏠</span>
+            Dashboard
           </div>
 
-          {/* OFFICER MANAGEMENT */}
-          <div className="feature-card" onClick={() => navigate("/stationhead/officers")}>
-            <div className="icon">🧑‍✈️</div>
-            <h3>Officer Management</h3>
-            <p>Create and manage officers</p>
-          </div>
-
-          {/* INCIDENT MANAGEMENT */}
-          <div className="feature-card" onClick={() => navigate("/stationhead/incidents")}>
-            <div className="icon">🚨</div>
-            <h3>Incident Control</h3>
-            <p>Assign officers & update status</p>
-          </div>
-
-          {/* CREATE OFFICER */}
-          <div className="feature-card" onClick={() => navigate("/stationhead/create-officer")}>
-            <div className="icon">➕</div>
-            <h3>Create Officer</h3>
-            <p>Add new officer to system</p>
-          </div>
-
-          {/* Profile */}
-          <div 
-            className="feature-card"
-            onClick={() => navigate("/profile")}
+          <div
+            className="nav-item logout"
+            onClick={() => {
+              localStorage.clear();
+              navigate("/");
+            }}
           >
-            <div className="icon">👤</div>
-            <h3>Profile</h3>
-            <p>Update your personal details</p>
+            <span>🚪</span>
+            Logout
           </div>
 
-          {/* Change Password */}
-          <div 
-            className="feature-card"
-            onClick={() => navigate("/change-password")}
-          >
-            <div className="icon">🔒</div>
-              <h3>Change Password</h3>
-              <p>Update your account password</p>
-            </div>
+        </nav>
+
+      </aside>
+
+      {/* Main */}
+      <main className="dashboard-main">
+
+        {/* Header */}
+        <div className="dashboard-header">
+
+          <div>
+            <h1>Station Head Command Center</h1>
+
+            <p>
+              Supervise officers, manage investigations,
+              monitor incident operations, and control
+              station-level activities securely.
+            </p>
+          </div>
+
+          <div className="status-card">
+            <span className="status-dot"></span>
+            System Active • Station Head Access
+          </div>
 
         </div>
-      </div>
+
+        {/* Welcome Banner */}
+        <div className="welcome-banner">
+
+          <div className="welcome-content">
+
+            <h2>Centralized Crime Management</h2>
+
+            <p>
+              Access real-time operational tools for
+              officer deployment, investigation tracking,
+              crime analytics, and citizen incident
+              management through the unified command portal.
+            </p>
+
+            <button
+              onClick={() =>
+                navigate("/stationhead/incidents")
+              }
+            >
+              Open Incident Control
+            </button>
+
+          </div>
+
+          <div className="welcome-graphic">
+            🛡️
+          </div>
+
+        </div>
+
+        {/* Cards */}
+        <div className="dashboard-grid">
+
+          {dashboardCards.map((card, index) => (
+
+            <div
+              key={index}
+              className={`dashboard-card ${card.color}`}
+              onClick={() => navigate(card.route)}
+            >
+
+              <div className="card-top">
+
+                <div className="card-icon">
+                  {card.icon}
+                </div>
+
+              </div>
+
+              <div className="card-content">
+
+                <h3>{card.title}</h3>
+
+                <p>{card.description}</p>
+
+              </div>
+
+              <div className="card-footer">
+
+                <span>Open Module</span>
+
+                <span>→</span>
+
+              </div>
+
+            </div>
+          ))}
+
+        </div>
+
+      </main>
+
     </div>
   );
 }

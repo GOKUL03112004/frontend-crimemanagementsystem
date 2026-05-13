@@ -84,7 +84,7 @@ function Register() {
           </div>
 
           <div className="verification-section">
-            <h4>Verification Details</h4>
+            <h4 style={{color:"#2563eb"}}>Verification Details</h4>
             <div className="form-row">
               <div className="form-group">
                 <label>Aadhaar Number</label>

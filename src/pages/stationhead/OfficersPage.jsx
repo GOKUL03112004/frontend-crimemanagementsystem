@@ -1,4 +1,5 @@
-import React, { useEffect, useState, Navigate } from "react";
+import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import API from "../../services/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,143 +8,250 @@ import { getRole } from "../../utils/auth";
 
 function OfficersPage() {
   const [officers, setOfficers] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({ userId: "", rank: "" });
-
-  // State for Editing
   const [editingId, setEditingId] = useState(null);
-  const [editFormData, setEditFormData] = useState({rank: "" });
+  const [editFormData, setEditFormData] = useState({
+    rank: "Bronze",
+  });
 
-  const fetchOfficers = async () => {
-    try {
-      const res = await API.get("/Officer/GetAllOfficers");
-      setOfficers(res.data);
-    } catch {
-      toast.error("Failed to load officers");
-    }
-  };
+  const role = getRole();
 
   useEffect(() => {
     fetchOfficers();
   }, []);
 
-  const role = getRole();
+  // 🔐 Role Protection
+  if (role !== "StationHead") {
+    return <Navigate to="/login" replace />;
+  }
+
   
-    // 🔐 Role Protection
-    if (role !== "StationHead") {
-      alert("Access Denied");
-       <Navigate to="/login" />;
-    }
-
-  const handleCreate = async (e) => {
-    e.preventDefault();
+  // Fetch Officers
+  const fetchOfficers = async () => {
     try {
-      const payload = { userId: Number(formData.userId), rank: formData.rank };
-      await API.post("/Officer/CreateOfficer", payload);
-      toast.success("Officer created successfully ✅");
-      setFormData({ userId: "", rank: "" });
-      setShowForm(false);
-      fetchOfficers();
+      const res = await API.get("/Officer/GetAllOfficers");
+
+      // Safe fallback
+      const formattedData = (res.data || []).map((officer) => ({
+        ...officer,
+        incidents: officer.incidents || [],
+        activeCases: officer.activeCases || 0,
+      }));
+
+      setOfficers(formattedData);
     } catch (err) {
-      toast.error(err.response?.data?.Message || "Error creating officer");
+      console.log(err);
+      toast.error("Failed to load officers");
     }
   };
 
-  // 🔹 Start Editing
+  
+
+  // Start Edit
   const startEdit = (officer) => {
+    console.log("Editing Officer:", officer);
+
     setEditingId(officer.officerId);
-    setEditFormData({  rank: officer.rank });
+
+    setEditFormData({
+      rank: officer.rank || "Bronze",
+    });
   };
 
-  // 🔹 Handle Update (PUT)
+  // Cancel Edit
+  const cancelEdit = () => {
+    setEditingId(null);
+
+    setEditFormData({
+      rank: "Bronze",
+    });
+  };
+
+  // Update Officer
   const handleUpdate = async (id) => {
     try {
-      const payload = {
-        rank: editFormData.rank
-      };
-      
-      // matches your [HttpPut("UpdateOfficer")]
-      const res = await API.put(`/Officer/UpdateOfficer?rank=${payload.rank}&id=${id}`);
-      
-      toast.success(res.data.Message || "Officer updated successfully");
+      if (!editFormData.rank) {
+        toast.error("Please select a rank");
+        return;
+      }
+
+      await API.put(
+        `/Officer/UpdateOfficer?rank=${editFormData.rank}&id=${id}`
+      );
+
+      toast.success("Officer updated successfully ✅");
+
       setEditingId(null);
+
       fetchOfficers();
     } catch (err) {
-        console.log(err)
-      toast.error("Update failed. Check if User ID exists.");
+      console.log(err);
+      toast.error("Update failed. Please try again.");
     }
   };
+
+  // Sort by active cases
+  const sortedOfficers = [...officers].sort(
+    (a, b) => b.activeCases - a.activeCases
+  );
 
   return (
     <div className="officers-container">
+      {/* Header */}
       <div className="top-bar">
         <div className="title-section">
-          <h1>Officer Details</h1>
-          <p>Manage ranks and active assignments</p>
+          <h1>Officer Management</h1>
+          <p>Station Personnel & Active Duty Status</p>
         </div>
-        
       </div>
 
-      
-
+      {/* Cards */}
       <div className="officer-grid">
-        {officers.map((officer) => (
-          <div key={officer.officerId} className={`officer-card ${editingId === officer.officerId ? "editing" : ""}`}>
+        {sortedOfficers.map((officer) => (
+          <div
+            key={officer.officerId}
+            className={`officer-card ${
+              editingId === officer.officerId ? "editing" : ""
+            }`}
+          >
+            {/* ================= EDIT MODE ================= */}
             {editingId === officer.officerId ? (
-              // 📝 EDIT MODE UI
               <div className="edit-mode-container">
-                <h4>Editing Officer #{officer.officerId}</h4>
-                
-                <div className="form-group">
-                    <label>Rank</label>
-                    <select 
-                        value={editFormData.rank} 
-                        onChange={(e) => setEditFormData({...editFormData, rank: e.target.value})}
-                    >
-                        <option value="Bronze">Bronze</option>
-                        <option value="Silver">Silver</option>
-                        <option value="Gold">Gold</option>
-                    </select>
+                <div className="edit-header">
+                  <h4>Update Rank</h4>
+
+                  <span className="id-badge">
+                    #{officer.officerId}
+                  </span>
                 </div>
+
+                <div className="edit-user-preview">
+                  <div className="mini-avatar">
+                    {officer.name?.charAt(0).toUpperCase()}
+                  </div>
+
+                  <div>
+                    <h3>{officer.name}</h3>
+                    <p>{officer.email}</p>
+                  </div>
+                </div>
+
+                <div className="form-group">
+                  <label>Select Rank</label>
+
+                  <select
+                    value={editFormData.rank}
+                    onChange={(e) =>
+                      setEditFormData({
+                        ...editFormData,
+                        rank: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="Bronze">Bronze</option>
+                    <option value="Silver">Silver</option>
+                    <option value="Gold">Gold</option>
+                  </select>
+                </div>
+
                 <div className="edit-actions">
-                    <button className="save-btn" onClick={() => handleUpdate(officer.officerId)}>Save</button>
-                    <button className="cancel-btn" onClick={() => setEditingId(null)}>Cancel</button>
+                  <button
+                    className="save-btn"
+                    onClick={() =>
+                      handleUpdate(officer.officerId)
+                    }
+                  >
+                    Save Changes
+                  </button>
+
+                  <button
+                    className="cancel-btn"
+                    onClick={cancelEdit}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             ) : (
-              // 🛡️ VIEW MODE UI
-              <>
-                <div className="officer-header">
-                  <div className="officer-info">
-                    <h3>{officer.name}</h3>
-                    <span className={`rank-badge ${officer.rank.toLowerCase()}`}>
-                      {officer.rank}
+              /* ================= VIEW MODE ================= */
+              <div className="officer-card-inner">
+                {/* Sidebar */}
+                <div className="officer-sidebar">
+                  <div className="profile-avatar">
+                    {officer.name?.charAt(0).toUpperCase()}
+                  </div>
+
+                  <h3>{officer.name}</h3>
+
+                  <span
+                    className={`rank-tag ${officer.rank?.toLowerCase()}`}
+                  >
+                    {officer.rank}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="edit-trigger"
+                    onClick={() => startEdit(officer)}
+                  >
+                    Edit Rank
+                  </button>
+                </div>
+
+                {/* Main */}
+                <div className="officer-main-content">
+                  <div className="content-header">
+                    <div className="stat-box">
+                      <span className="stat-num">
+                         {officer.activeCases}
+                      </span>
+
+                      <span className="stat-label">
+                        Active Cases
+                      </span>
+                    </div>
+
+                    <span className="officer-id-text">
+                      Ref: #{officer.officerId}
                     </span>
                   </div>
-                  <button className="edit-icon-btn" onClick={() => startEdit(officer)}>✏️</button>
-                </div>
 
-                <div className="officer-stats">
-                    <p><strong>Officer ID:</strong> {officer.officerId}</p>
-                    <p><strong>Active Cases:</strong> {officer.activeCases}</p>
-                </div>
+                  <div className="incident-block">
+                    <h4>Assigned Incidents</h4>
 
-                <div className="incident-section">
-                  <h4>Assigned Incidents</h4>
-                  <div className="incident-scroll-list">
-                    {officer.incidents.map((i) => (
-                      <div key={i.incidentId} className="incident-item">
-                        <span className="inc-id">#INC-{i.incidentId}</span>
-                        <span className={`inc-status ${i.status.toLowerCase()}`}>{i.status}</span>
-                      </div>
-                    ))}
+                    <div className="incident-list-compact">
+                      {officer.incidents.length > 0 ? (
+                        officer.incidents.map((incident) => (
+                          <div
+                            key={incident.incidentId}
+                            className="incident-row"
+                          >
+                            <span className="inc-ref">
+                              #{incident.incidentId}
+                            </span>
+
+                            <span
+                              className={`inc-status-dot ${incident.status
+                                ?.toLowerCase()
+                                .replace(/\s/g, "")}`}
+                            >
+                              {incident.status}
+                            </span>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="empty-msg">
+                          No active assignments
+                        </p>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </>
+              </div>
             )}
           </div>
         ))}
       </div>
+
       <ToastContainer position="bottom-right" />
     </div>
   );

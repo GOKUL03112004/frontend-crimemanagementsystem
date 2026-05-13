@@ -1,153 +1,154 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
 
 const LandingPage = () => {
   const navigate = useNavigate();
 
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
+  // Initialize state directly from localStorage to avoid "flash of unauthenticated content"
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [role, setRole] = useState(() => localStorage.getItem("role"));
 
-  // Sync with localStorage
+  const handleLogout = useCallback(() => {
+    localStorage.clear();
+    setToken(null);
+    setRole(null);
+    navigate("/");
+  }, [navigate]);
+
   useEffect(() => {
-    const syncAuth = () => {
-      setToken(localStorage.getItem("token"));
-      setRole(localStorage.getItem("role"));
+    const syncAuth = (e) => {
+      // If the storage event was triggered by another tab (logout/login)
+      if (e && e.key === null) { // localStorage.clear() was called
+        handleLogout();
+      } else {
+        setToken(localStorage.getItem("token"));
+        setRole(localStorage.getItem("role"));
+      }
     };
-
-    syncAuth();
 
     window.addEventListener("storage", syncAuth);
     return () => window.removeEventListener("storage", syncAuth);
-  }, []);
+  }, [handleLogout]);
 
-  // Redirect based on role
   const handleDashboardRedirect = () => {
-    if (!role) {
-      alert("Role not found. Please login again.");
+    if (!token || !role) {
+      alert("Session expired or invalid. Please login again.");
       handleLogout();
       return;
     }
 
-    switch (role) {
-      case "User":
-        navigate("/user-dashboard");
-        break;
-      case "Officer":
-        navigate("/officer-dashboard");
-        break;
-      case "StationHead":
-        navigate("/station-head-dashboard");
-        break;
-      default:
-        alert("Unknown role. Please login again.");
-        handleLogout();
+    const routes = {
+      User: "/user-dashboard",
+      Officer: "/officer-dashboard",
+      StationHead: "/station-head-dashboard",
+    };
+
+    const target = routes[role];
+    if (target) {
+      navigate(target);
+    } else {
+      alert("Unauthorized Role Configuration.");
+      handleLogout();
     }
   };
 
-  // Logout
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-
-    setToken(null);
-    setRole(null);
-
-    navigate("/");
-  };
-
   return (
-    <div className="landing-container">
-      {/* Navbar */}
+    <div className="landing-page">
+      <div className="bg-blur blur-one"></div>
+      <div className="bg-blur blur-two"></div>
+
       <nav className="navbar">
-        <div className="logo-section">
-          <span>🛡️</span>
-          <span>MEIKAAPPU</span>
+        <div className="logo-section" onClick={() => navigate("/")} style={{cursor: 'pointer'}}>
+          <div className="logo-icon">🛡️</div>
+          <div>
+            <h2>MEIKAAPPU</h2>
+            <span>Crime Intelligence Platform</span>
+          </div>
         </div>
 
-        {/* Buttons */}
-        {token ? (
-          <div className="nav-buttons">
-            <button
-              className="login-button"
-              onClick={handleDashboardRedirect}
-              disabled={!role}
-            >
-              Go to Dashboard
+        <div className="nav-buttons">
+          {token ? (
+            <>
+              <button className="primary-btn" onClick={handleDashboardRedirect}>
+                Dashboard
+              </button>
+              <button className="secondary-btn" onClick={handleLogout}>
+                Logout
+              </button>
+            </>
+          ) : (
+            <button className="primary-btn" onClick={() => navigate("/login")}>
+              Secure Login
             </button>
-
-            <button
-              className="logout-outline-button"
-              onClick={handleLogout}
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <button
-            className="login-button"
-            onClick={() => navigate("/login")}
-          >
-            Login
-          </button>
-        )}
+          )}
+        </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="hero">
-        <h1>Secure. Centralized. Efficient.</h1>
-        <p>
-          The next generation of crime management. Track incidents, manage
-          evidence, and analyze data with military-grade security protocols.
-        </p>
-
-        <div className="hero-btns">
-          <a href="#features" className="btn-main">
-            System Overview
-          </a>
-          <a href="#contact" className="btn-outline">
-            Contact Admin
-          </a>
-        </div>
-      </header>
-
-      {/* Features */}
-      <section className="features-section" id="features">
-        <div className="feature-card">
-          <div className="feature-icon">📊</div>
-          <h3>Intelligence Analytics</h3>
-          <p>
-            Real-time data visualization of crime rates and patrol efficiency
-            across districts.
+      <section className="hero-section">
+        <div className="hero-content">
+          <p className="hero-tag">NATIONAL DIGITAL INVESTIGATION SYSTEM</p>
+          <h1>
+            Smart Crime
+            <span> Management & Intelligence</span>
+          </h1>
+          <p className="hero-description">
+            A state-of-the-art centralized ecosystem for law enforcement. 
+            Streamline evidence tracking, officer coordination, and real-time 
+            analytics through a cryptographically secure interface.
           </p>
+
+          <div className="hero-buttons">
+            <button className="primary-btn large-btn" onClick={token ? handleDashboardRedirect : () => navigate("/login")}>
+              {token ? "Access Dashboard" : "Get Started"}
+            </button>
+            <a href="#features" className="secondary-btn large-btn">Explore Features</a>
+          </div>
         </div>
 
-        <div className="feature-card">
-          <div className="feature-icon">📂</div>
-          <h3>Case Management</h3>
-          <p>
-            End-to-end tracking of criminal cases from initial report to court
-            resolution.
-          </p>
-        </div>
-
-        <div className="feature-card">
-          <div className="feature-icon">🔒</div>
-          <h3>High Security</h3>
-          <p>
-            Multi-factor authentication and role-based access to protect
-            sensitive documents.
-          </p>
+        <div className="hero-cards">
+          <div className="glass-card">
+            <h3>98%</h3>
+            <p>Case Resolution</p>
+          </div>
+          <div className="glass-card">
+            <h3>AES-256</h3>
+            <p>Data Encryption</p>
+          </div>
+          <div className="glass-card">
+            <h3>AI</h3>
+            <p>Pattern Analysis</p>
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Features & Other sections remain same, just ensure they use the new CSS variables */}
+      <section className="features-section" id="features">
+         <div className="section-header">
+           <p>CORE FEATURES</p>
+           <h2>Advanced Operational Capabilities</h2>
+         </div>
+         <div className="features-grid">
+           <div className="feature-card">
+             <div className="feature-icon">📂</div>
+             <h3>Incident Management</h3>
+             <p>Register, track, and monitor incidents from reporting to final closure.</p>
+           </div>
+           <div className="feature-card">
+             <div className="feature-icon">📊</div>
+             <h3>Real-time Analytics</h3>
+             <p>Generate heatmaps and operational statistics instantly.</p>
+           </div>
+           <div className="feature-card">
+             <div className="feature-icon">🔒</div>
+             <h3>Role-Based Access</h3>
+             <p>Strict RBAC protocols for Officers and Station Heads.</p>
+           </div>
+         </div>
+      </section>
+
       <footer className="footer">
-        <p>
-          &copy; 2026 MEIKAAPPU Crime Management Solutions. Law Enforcement Use
-          Only.
-        </p>
+        <p>© 2026 MEIKAAPPU. Authorized Personnel Only. System Monitored.</p>
       </footer>
     </div>
   );

@@ -1,241 +1,103 @@
+/* Inherit all variables from your provided :root */
 :root {
-  --primary-dark: #1a1c23;
-  --accent-blue: #3b82f6;
-  --bg-light: #f1f5f9;
-  --white: #ffffff;
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+  --bg-card: rgba(255, 255, 255, 0.82);
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --border: #dbe4f0;
+  --success: #10b981;
+  --glass: blur(18px);
+  --shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
 }
 
-.officer-dashboard-layout {
-  display: flex;
+/* Use the exact same container styling */
+.incidents-page-container.officer-portal {
   min-height: 100vh;
-  background-color: var(--bg-light);
-}
-
-/* Sidebar Styling */
-.officer-sidebar {
-  width: 240px;
-  background: var(--primary-dark);
-  color: white;
-  padding: 25px;
-  flex-shrink: 0;
-}
-
-.officer-sidebar h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  cursor: pointer;
-  font-size: 1.4rem;
-  color: var(--accent-blue);
-}
-
-.officer-sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.officer-sidebar li {
-  padding: 14px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-  font-weight: 500;
-  color: #94a3b8;
-}
-
-.officer-sidebar li:hover,
-.officer-sidebar li.active {
-  background: var(--accent-blue);
-  color: white;
-}
-
-/* Main Content */
-.officer-main-content {
-  flex: 1;
   padding: 40px;
-  overflow-y: auto;
+  background: radial-gradient(circle at top left, #dbeafe 0%, transparent 25%),
+              linear-gradient(135deg, #f8fbff, #eef5ff);
+  font-family: "Inter", sans-serif;
 }
 
-.officer-header {
-  margin-bottom: 30px;
-  border-left: 5px solid #1e3a8a;
-  padding-left: 20px;
+.header-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.officer-header h1 {
-  color: #0f172a;
-  margin: 0;
+.btn-logout-minimal {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.officer-header p {
-  color: #64748b;
-  margin-top: 5px;
+.btn-logout-minimal:hover {
+    background: #ef4444;
+    color: white;
 }
 
-/* Grid & Cards */
-.officer-incident-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 25px;
+/* Officer Card Modification */
+.officer-card {
+    border-left: 5px solid var(--primary); /* Visual cue for officers */
 }
 
-.officer-incident-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.mini-info-box {
+    margin: 15px 0;
+    padding: 12px;
+    background: rgba(15, 23, 42, 0.03);
+    border-radius: 14px;
+    font-size: 0.9rem;
 }
 
-.card-top-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.mini-info-box p {
+    margin: 4px 0;
+    color: var(--text-secondary);
 }
 
-.case-id {
-  font-family: monospace;
-  font-weight: 700;
-  color: #94a3b8;
+/* Officer Modal Theme (Slightly Darker Header) */
+.modal-header-sec.officer-theme {
+    background: linear-gradient(135deg, #1e293b, #334155);
 }
 
-/* Status Pills Inherited */
-.status-pill {
-  font-size: 0.7rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 20px;
-  text-transform: uppercase;
+/* Evidence Media Styling */
+.evidence-media-preview {
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-top: 10px;
 }
 
-.status-pill.active { background: #dbeafe; color: #1e40af; }
-.status-pill.closed { background: #fef3c7; color: #92400e; }
-.status-pill.verified { background: #dcfce7; color: #166534; }
-
-.personnel-info-box {
-  background: #f8fafc;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+.evidence-media-preview img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    background: #000;
 }
 
-.info-line {
-  font-size: 0.85rem;
-  color: #334155;
-  margin-bottom: 4px;
+/* Finalize Button */
+.btn-finalize {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
 }
 
-.id-badge {
-  color: #1e3a8a;
-  font-weight: 700;
-  font-size: 0.8rem;
-  background: #dbeafe;
-  padding: 1px 6px;
-  border-radius: 4px;
+.btn-finalize:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
 }
 
-/* Action Buttons */
-.card-final-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.btn-view { flex: 1; background: #f1f5f9; border: 1px solid #cbd5e1; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-.btn-pdf { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 10px 15px; border-radius: 6px; cursor: pointer; }
-.btn-close-case { flex: 2; background: #1e3a8a; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: 600; }
-
-/* System Loading */
-.system-loading {
-  text-align: center;
-  padding: 50px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-/* Re-using Shared Modal Classes */
-.modal-overlay {
-  position: fixed;
-  top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(15, 23, 42, 0.8);
-  webkit-backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.report-modal-window {
-  background: white;
-  width: 90%;
-  max-width: 800px;
-  max-height: 90vh;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.modal-header-sec {
-  padding: 20px 30px;
-  background: #1a1c23;
-  color: white;
-  position: relative;
-  border-radius: 16px 16px 0 0;
-}
-
-.official-stamp {
-  font-size: 0.65rem;
-  color: #ef4444;
-  border: 1px solid #ef4444;
-  padding: 2px 6px;
-  display: block;
-  width: fit-content;
-  margin-bottom: 5px;
-}
-
-.close-x {
-  position: absolute;
-  top: 20px; right: 20px;
-  background: none; border: none;
-  color: white; font-size: 1.5rem; cursor: pointer;
-}
-
-.modal-scroll-content {
-  padding: 30px;
-  overflow-y: auto;
-}
-
-.report-grid-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.report-box h4 {
-  border-bottom: 2px solid #f1f5f9;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  color: #1e3a8a;
-}
-
-.report-evidence img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  background: #f8fafc;
-  border-radius: 8px;
-}
-
-.modal-footer-sec {
-  padding: 20px 30px;
-  border-top: 1px solid #e2e8f0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 15px;
-}
-
-.btn-download-pdf { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
-.btn-close-modal { background: #64748b; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+/* Re-use all other modal, grid, and card styles from your GetAllIncident.css */
+/* ... (Ensure the .incidents-grid, .incident-summary-card, and .report-modal-window CSS is identical) */

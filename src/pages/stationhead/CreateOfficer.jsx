@@ -58,7 +58,7 @@ function CreateOfficer() {
         <h2 onClick={() => navigate("/")}>🛡️MEIKAAPPU</h2>
         <ul>
           <li onClick={() => navigate("/station-head-dashboard")}>Dashboard</li>
-          <li className="active">Create Officer</li>
+          
           
           <li onClick={() => {
             localStorage.clear();

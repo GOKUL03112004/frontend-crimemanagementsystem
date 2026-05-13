@@ -9,11 +9,13 @@ import CreateIncident from "./pages/user/CreateIncident";
 import GetAllIncidentUser from "./pages/user/GetAllIncident"
 import OfficerDashBoard from "./pages/officer/OfficerDashBoard";
 import OfficerIncidents from "./pages/officer/OfficerIncidents"
+import OfficerPerformance from "./pages/officer/OfficerPerformance";
 import StationHeadDashBoard from "./pages/stationhead/StationHeadDashBoard";
 import UsersManagement from "./pages/stationhead/UsersPage"
 import OfficerManagement from "./pages/stationhead/OfficersPage"
 import IncidentsManagement from "./pages/stationhead/IncidentsPage"
 import CreateOfficer from "./pages/stationhead/CreateOfficer"
+import CrimeAnalytics from "./pages/stationhead/CrimeAnalytics";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -42,9 +44,11 @@ function App() {
         <Route path="/stationhead/officers" element={<ProtectedRoute><OfficerManagement/></ProtectedRoute>}/>
         <Route path="/stationhead/create-officer" element={<ProtectedRoute><CreateOfficer/></ProtectedRoute>}/>
         <Route path="/stationhead/incidents" element={<ProtectedRoute><IncidentsManagement/></ProtectedRoute>}/>
+        <Route path="/stationhead/crime-analytics" element={<ProtectedRoute><CrimeAnalytics/></ProtectedRoute>}/>
 
         {/* Officer */}
         <Route path="/officer/officer-assignments" element={<ProtectedRoute><OfficerIncidents/></ProtectedRoute>}/>
+        <Route path="/officer/officer-performance" element={<ProtectedRoute><OfficerPerformance/></ProtectedRoute>}/>
         
         
 
