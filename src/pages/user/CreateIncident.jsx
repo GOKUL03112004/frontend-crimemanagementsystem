@@ -112,15 +112,10 @@ function CreateIncident() {
 
     if (!file) return;
 
-    const allowedTypes = [
-      "image/jpeg",
-      "image/png",
-      "image/jpg",
-      "image/webp"
-    ];
+    const allowedTypes = ["image/jpeg", "image/jpg"];
 
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Only JPG, PNG and WEBP images are allowed");
+      toast.error("Only JPG are allowed");
       return;
     }
 
