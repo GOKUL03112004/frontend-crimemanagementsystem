@@ -32,7 +32,7 @@ function Register() {
     try {
       await API.post("/Auth/Register", form);
       toast.success("Registration successful!")
-      navigate("/login");
+      setTimeout(navigate("/login"),2000)
     } catch (err) {
       console.error(err);
       alert(err.response?.data?.message || "Registration failed. Please check your details.");

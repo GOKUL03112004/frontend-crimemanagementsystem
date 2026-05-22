@@ -212,7 +212,6 @@ function OfficerPerformance() {
                     <th>Case ID</th>
                     <th>Title</th>
                     <th>Status</th>
-                    <th>Category</th>
                   </tr>
                 </thead>
 
